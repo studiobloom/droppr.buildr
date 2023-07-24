@@ -18,70 +18,65 @@
 
     <script>
         document.getElementById('uploadForm').addEventListener('submit', function(event) {
-            console.log("Form submitted");
             event.preventDefault();
             const fontFile = document.getElementById('fontFile').files[0];
             const textInput = document.getElementById('textInput').value;
 
-            if (!fontFile || !textInput) {
-                alert('Please upload a font file and enter some text.');
-                return;
-            }
-
             const fileReader = new FileReader();
-            fileReader.onload = function() {
-                console.log("File loaded");
-                opentype.load(fileReader.result, function(err, font) {
-                    if (err) {
-                        console.error('Could not parse font file: ' + err);
-                        return;
-                    }
+            fileReader.onload = async function() {
+                const fontArrayBuffer = fileReader.result;
+                try {
+                    const font = opentype.parse(fontArrayBuffer);
+                    const fontSize = 200; // Increase font size for better resolution
 
-                    console.log("Font file parsed");
-
-                    const fontSize = 50;
-                    const pathOptions = {
-                        x: 0,
-                        y: 60, // Adjust this value to position the text vertically in the canvas
-                        fontSize,
-                        kerning: true,
-                    };
-
-                    // Create path data for your text
-                    const path = font.getPath(textInput, pathOptions.x, pathOptions.y, pathOptions.fontSize);
-
-                    // Get the path data for the text
-                    const svgPathData = path.toPathData(pathOptions.x, pathOptions.y, pathOptions.fontSize);
-
-                    // Now you can create an SVG element with this path
+                    // Create an SVG element
                     const svgNS = 'http://www.w3.org/2000/svg';
                     const svgElem = document.createElementNS(svgNS, 'svg');
-                    const pathElem = document.createElementNS(svgNS, 'path');
-
-                    pathElem.setAttribute('d', svgPathData);
                     svgElem.setAttribute('xmlns', svgNS);
-                    svgElem.setAttribute('width', path.getBoundingBox().x2 - path.getBoundingBox().x1);
-                    svgElem.setAttribute('height', path.getBoundingBox().y2 - path.getBoundingBox().y1);
+                    svgElem.setAttribute('width', 1000); // Set a suitable width for the SVG
+                    svgElem.setAttribute('height', 200); // Set a suitable height for the SVG
 
-                    svgElem.appendChild(pathElem);
-                    console.log("SVG element created");
+                    // Create a group element to hold the paths
+                    const groupElem = document.createElementNS(svgNS, 'g');
+
+                    // Calculate the total width required for the text
+                    let totalWidth = Array.from(textInput).reduce((acc, char) => {
+                        const glyph = font.charToGlyph(char);
+                        return acc + glyph.advanceWidth * fontSize / font.unitsPerEm;
+                    }, 0);
+
+                    let x = (1000 - totalWidth) / 2; // Center the text horizontally
+
+                    // Create paths for each character and add them to the group
+                    for (const char of textInput) {
+                        const glyph = font.charToGlyph(char);
+                        const path = glyph.getPath(x, 150, fontSize);
+
+                        const pathElem = document.createElementNS(svgNS, 'path');
+                        pathElem.setAttribute('d', path.toPathData());
+                        groupElem.appendChild(pathElem);
+
+                        x += glyph.advanceWidth * fontSize / font.unitsPerEm;
+                    }
+
+                    // Add the group to the SVG
+                    svgElem.appendChild(groupElem);
 
                     // Add the SVG to your page
                     const svgOutputDiv = document.getElementById('svgOutput');
                     svgOutputDiv.innerHTML = '';
                     svgOutputDiv.appendChild(svgElem);
-                    console.log("SVG added to the page");
 
                     // Add a link to download the SVG
                     const downloadLink = document.getElementById('downloadLink');
                     downloadLink.href = "data:image/svg+xml," + encodeURIComponent(svgElem.outerHTML);
                     downloadLink.download = textInput.replace(/\s/g, '_') + ".svg"; // Set the filename based on the text input
                     downloadLink.style.display = "block";
-                    console.log("Download link set up");
-                });
+                } catch (err) {
+                    console.error("Could not load font:", err);
+                }
             };
 
-            console.log("Reading font file");
             fileReader.readAsArrayBuffer(fontFile);
         });
     </script>
