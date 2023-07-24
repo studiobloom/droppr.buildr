@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SVG Text Generator</title>
+    <script src="https://rawgit.com/Pomax/Font.js/master/Font.js"></script>
+</head>
+<body>
+    <h1>SVG Text Generator</h1>
+    <form id="uploadForm">
+        <input type="file" id="fontFile" accept=".ttf,.otf" required>
+        <br>
+        <textarea id="textInput" rows="4" cols="50" required></textarea>
+        <br>
+        <button type="submit">Generate SVG</button>
+    </form>
+    <div id="svgOutput"></div>
+    <a href="#" id="downloadLink" style="display: none;">Download SVG</a>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const fontFile = document.getElementById('fontFile').files[0];
+            const textInput = document.getElementById('textInput').value;
+
+            if (!fontFile || !textInput) {
+                alert('Please upload a font file and enter some text.');
+                return;
+            }
+
+            const fileReader = new FileReader();
+            fileReader.onload = function() {
+                var font = new Font();
+                font.onload = function() {
+                    // Create path data for your text
+                    var path = font.getPath(textInput, 0, 50, 50);
+                    var svgPathData = path.toSVG();
+
+                    // Now you can create an SVG element with this path
+                    var svgNS = 'http://www.w3.org/2000/svg';
+                    var svgElem = document.createElementNS(svgNS, 'svg');
+                    var pathElem = document.createElementNS(svgNS, 'path');
+
+                    pathElem.setAttribute('d', svgPathData);
+                    svgElem.appendChild(pathElem);
+
+                    // Add the SVG to your page
+                    var svgOutputDiv = document.getElementById('svgOutput');
+                    svgOutputDiv.innerHTML = '';
+                    svgOutputDiv.appendChild(svgElem);
+
+                    // Add a link to download the SVG
+                    const downloadLink = document.getElementById('downloadLink');
+                    downloadLink.href = "data:image/svg+xml," + encodeURIComponent(svgElem.outerHTML);
+                    downloadLink.download = textInput.replace(/\s/g, '_') + ".svg"; // Set the filename based on the text input
+                    downloadLink.style.display = "block";
+                };
+
+                font.src = URL.createObjectURL(fontFile);
+            };
+
+            fileReader.readAsArrayBuffer(fontFile);
+        });
+    </script>
+</body>
+</html>
