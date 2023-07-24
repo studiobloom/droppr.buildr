@@ -18,6 +18,7 @@
 
     <script>
         document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            console.log("Form submitted");
             event.preventDefault();
             const fontFile = document.getElementById('fontFile').files[0];
             const textInput = document.getElementById('textInput').value;
@@ -29,17 +30,22 @@
 
             const fileReader = new FileReader();
             fileReader.onload = function() {
+                console.log("File loaded");
                 opentype.parse(fileReader.result, function(err, font) {
                     if (err) {
-                        alert('Could not parse font file: ' + err);
+                        console.error('Could not parse font file: ' + err);
                         return;
                     }
 
+                    console.log("Font file parsed");
+
                     // Create path data for your text
                     var path = font.getPath(textInput, 0, 60, 50);
+                    console.log("Path data created");
 
                     // Convert the path data to an SVG path
                     var svgPathData = path.toSVG();
+                    console.log("SVG path data created");
 
                     // Now you can create an SVG element with this path
                     var svgNS = 'http://www.w3.org/2000/svg';
@@ -48,20 +54,24 @@
 
                     pathElem.setAttribute('d', svgPathData);
                     svgElem.appendChild(pathElem);
+                    console.log("SVG element created");
 
                     // Add the SVG to your page
                     var svgOutputDiv = document.getElementById('svgOutput');
                     svgOutputDiv.innerHTML = '';
                     svgOutputDiv.appendChild(svgElem);
+                    console.log("SVG added to the page");
 
                     // Add a link to download the SVG
                     const downloadLink = document.getElementById('downloadLink');
                     downloadLink.href = "data:image/svg+xml," + encodeURIComponent(svgElem.outerHTML);
                     downloadLink.download = textInput.replace(/\s/g, '_') + ".svg"; // Set the filename based on the text input
                     downloadLink.style.display = "block";
+                    console.log("Download link set up");
                 });
             };
 
+            console.log("Reading font file");
             fileReader.readAsArrayBuffer(fontFile);
         });
     </script>
