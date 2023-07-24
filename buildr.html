@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Website Builder</title>
+</head>
+<body>
+    <h1>Website Builder</h1>
+    <form id="buildForm">
+        
+        <label for="desktopVideo">Upload Desktop Video (MP4):</label>
+        <input type="file" id="desktopVideo" accept=".mp4" required><br>
+
+        <label for="mobileVideo">Upload Mobile Video (MP4):</label>
+        <input type="file" id="mobileVideo" accept=".mp4" required><br>
+
+        <label for="logoImage">Upload Logo Image (SVG):</label>
+        <input type="file" id="logoImage" accept=".svg" required><br>
+
+        <label for="link1URL">Top Nav Link 1 URL:</label>
+        <input type="text" id="link1URL" required><br>
+
+        <label for="link1">Top Nav Link 1 Image (SVG):</label>
+        <input type="file" id="link1" required><br>
+
+        <label for="link2URL">Top Nav Link 2 URL:</label>
+        <input type="text" id="link2URL"><br>
+
+        <label for="link2">Top Nav Link 2 Image (SVG):</label>
+        <input type="file" id="link2"><br>
+
+        <label for="link3URL">Top Nav Link 3 URL:</label>
+        <input type="text" id="link3URL"><br>
+
+        <label for="link3">Top Nav Link 3 Image (SVG):</label>
+        <input type="file" id="link3"><br>
+
+        <label for="link4URL">Top Nav Link 4 URL:</label>
+        <input type="text" id="link4URL"><br>
+
+        <label for="link4">Top Nav Link 4 Image (SVG):</label>
+        <input type="file" id="link4"><br>
+
+        <label for="social1URL">Social Nav 1 URL:</label>
+        <input type="text" id="social1URL" required><br>
+
+        <label for="social1">Social Nav 1 Image (SVG):</label>
+        <input type="file" id="social1" accept=".svg" required><br>
+        
+        <label for="social2URL">Social Nav 2 URL:</label>
+        <input type="text" id="social2URL"><br>
+
+        <label for="social2">Social Nav 2 Image (SVG):</label>
+        <input type="file" id="social2" accept=".svg"><br>
+
+        <label for="social3URL">Social Nav 3 URL:</label>
+        <input type="text" id="social3URL"><br>
+
+        <label for="social3">Social Nav 3 Image (SVG):</label>
+        <input type="file" id="social3" accept=".svg"><br>
+
+        <label for="social4URL">Social Nav 4 URL:</label>
+        <input type="text" id="social4URL"><br>
+
+        <label for="social4">Social Nav 4 Image (SVG):</label>
+        <input type="file" id="social4" accept=".svg"><br>
+
+        <label for="social5URL">Social Nav 5 URL:</label>
+        <input type="text" id="social5URL"><br>
+
+        <label for="social5">Social Nav 5 Image (SVG):</label>
+        <input type="file" id="social5" accept=".svg"><br>
+
+        <button type="button" id="generateBuild">Generate Build</button>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
+    <script src="buildr.js"></script>
+</body>
+</html>
