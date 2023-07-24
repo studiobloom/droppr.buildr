@@ -27,27 +27,23 @@
                 const fontArrayBuffer = fileReader.result;
                 try {
                     const font = opentype.parse(fontArrayBuffer);
-                    const fontSize = 200; // Increase font size for better resolution
+                    const fontSize = 100;
 
-                    // Create an SVG element
                     const svgNS = 'http://www.w3.org/2000/svg';
                     const svgElem = document.createElementNS(svgNS, 'svg');
                     svgElem.setAttribute('xmlns', svgNS);
-                    svgElem.setAttribute('width', 1000); // Set a suitable width for the SVG
-                    svgElem.setAttribute('height', 200); // Set a suitable height for the SVG
+                    svgElem.setAttribute('width', 1000);
+                    svgElem.setAttribute('height', 200);
 
-                    // Create a group element to hold the paths
                     const groupElem = document.createElementNS(svgNS, 'g');
 
-                    // Calculate the total width required for the text
                     let totalWidth = Array.from(textInput).reduce((acc, char) => {
                         const glyph = font.charToGlyph(char);
                         return acc + glyph.advanceWidth * fontSize / font.unitsPerEm;
                     }, 0);
 
-                    let x = (1000 - totalWidth) / 2; // Center the text horizontally
+                    let x = (1000 - totalWidth) / 2;
 
-                    // Create paths for each character and add them to the group
                     for (const char of textInput) {
                         const glyph = font.charToGlyph(char);
                         const path = glyph.getPath(x, 150, fontSize);
@@ -59,18 +55,15 @@
                         x += glyph.advanceWidth * fontSize / font.unitsPerEm;
                     }
 
-                    // Add the group to the SVG
                     svgElem.appendChild(groupElem);
 
-                    // Add the SVG to your page
                     const svgOutputDiv = document.getElementById('svgOutput');
                     svgOutputDiv.innerHTML = '';
                     svgOutputDiv.appendChild(svgElem);
 
-                    // Add a link to download the SVG
                     const downloadLink = document.getElementById('downloadLink');
                     downloadLink.href = "data:image/svg+xml," + encodeURIComponent(svgElem.outerHTML);
-                    downloadLink.download = textInput.replace(/\s/g, '_') + ".svg"; // Set the filename based on the text input
+                    downloadLink.download = textInput.replace(/\s/g, '_') + ".svg";
                     downloadLink.style.display = "block";
                 } catch (err) {
                     console.error("Could not load font:", err);
