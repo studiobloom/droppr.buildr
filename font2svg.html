@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>SVG Text Generator</title>
-    <script src="https://rawgit.com/Pomax/Font.js/master/Font.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/0.12.0/opentype.min.js"></script>
 </head>
 <body>
     <h1>SVG Text Generator</h1>
@@ -29,10 +29,16 @@
 
             const fileReader = new FileReader();
             fileReader.onload = function() {
-                var font = new Font();
-                font.onload = function() {
+                opentype.parse(fileReader.result, function(err, font) {
+                    if (err) {
+                        alert('Could not parse font file: ' + err);
+                        return;
+                    }
+
                     // Create path data for your text
-                    var path = font.getPath(textInput, 0, 50, 50);
+                    var path = font.getPath(textInput, 0, 60, 50);
+
+                    // Convert the path data to an SVG path
                     var svgPathData = path.toSVG();
 
                     // Now you can create an SVG element with this path
@@ -53,9 +59,7 @@
                     downloadLink.href = "data:image/svg+xml," + encodeURIComponent(svgElem.outerHTML);
                     downloadLink.download = textInput.replace(/\s/g, '_') + ".svg"; // Set the filename based on the text input
                     downloadLink.style.display = "block";
-                };
-
-                font.src = URL.createObjectURL(fontFile);
+                });
             };
 
             fileReader.readAsArrayBuffer(fontFile);
