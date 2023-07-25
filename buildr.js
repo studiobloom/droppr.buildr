@@ -5,17 +5,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const logoImageInput = document.getElementById("logoImage");
     const fontFileInput = document.getElementById("fontFile");
     const generateBuildButton = document.getElementById("generateBuild");
-  
-    // Get references to link input elements
+
+    // Get references to link and social media input elements
     const link1URLInput = document.getElementById("link1URL");
-    const link1TextInput = document.getElementById("link1");
+    const link1Input = document.getElementById("link1");
     const link2URLInput = document.getElementById("link2URL");
-    const link2TextInput = document.getElementById("link2");
+    const link2Input = document.getElementById("link2");
     const link3URLInput = document.getElementById("link3URL");
-    const link3TextInput = document.getElementById("link3");
+    const link3Input = document.getElementById("link3");
     const link4URLInput = document.getElementById("link4URL");
-    const link4TextInput = document.getElementById("link4");
-  
+    const link4Input = document.getElementById("link4");
+
     // Get references to social media input elements
     const social1URLInput = document.getElementById("social1URL");
     const social1ImageInput = document.getElementById("social1");
@@ -27,85 +27,91 @@ document.addEventListener("DOMContentLoaded", function () {
     const social4ImageInput = document.getElementById("social4");
     const social5URLInput = document.getElementById("social5URL");
     const social5ImageInput = document.getElementById("social5");
-  
+
     // Handle form submission when the "Generate Build" button is clicked
     generateBuildButton.addEventListener("click", async function () {
-      // Gather user-selected assets and data
-      const desktopVideoFile = desktopVideoInput.files[0];
-      const mobileVideoFile = mobileVideoInput.files[0];
-      const logoImage = logoImageInput.files[0];
-      const fontFile = fontFileInput.files[0];
-  
-      const link1URL = link1URLInput.value;
-      const link1Text = link1TextInput.value;
-      const link2URL = link2URLInput.value;
-      const link2Text = link2TextInput.value;
-      const link3URL = link3URLInput.value;
-      const link3Text = link3TextInput.value;
-      const link4URL = link4URLInput.value;
-      const link4Text = link4TextInput.value;
-  
-      const social1URL = social1URLInput.value;
-      const social1Image = social1ImageInput.files[0];
-      const social2URL = social2URLInput.value;
-      const social2Image = social2ImageInput.files[0];
-      const social3URL = social3URLInput.value;
-      const social3Image = social3ImageInput.files[0];
-      const social4URL = social4URLInput.value;
-      const social4Image = social4ImageInput.files[0];
-      const social5URL = social5URLInput.value;
-      const social5Image = social5ImageInput.files[0];
-  
-      // Create a zip file using the chosen assets and data
-      const zip = new JSZip();
-  
-      if (desktopVideoFile) { zip.file("videos/desktop.mp4", desktopVideoFile); }
-      if (mobileVideoFile) { zip.file("videos/mobile.mp4", mobileVideoFile); }
-      if (logoImage) { zip.file("images/logo.svg", logoImage); }
-  
-      // Add link SVG files to the zip
-      const texts = [link1Text, link2Text, link3Text, link4Text];
-      if (fontFile) {
-        const fontArrayBuffer = await fontFile.arrayBuffer();
-        const svgFiles = await generateSVGFilesFromFont(fontArrayBuffer, texts);
-        for (let i = 0; i < svgFiles.length; i++) {
-          zip.file(`images/link${i + 1}.svg`, svgFiles[i]);
-        }
-      }
-  
-      // Add social icon SVG files to the zip
-      if (social1Image) { zip.file("images/social1.svg", social1Image); }
-      if (social2Image) { zip.file("images/social2.svg", social2Image); }
-      if (social3Image) { zip.file("images/social3.svg", social3Image); }
-      if (social4Image) { zip.file("images/social4.svg", social4Image); }
-      if (social5Image) { zip.file("images/social5.svg", social5Image); }
-  
-      // Modify the template's content using the user-submitted data
-      const modifiedHTML = getModifiedHTML(link1URL, link2URL, link3URL, link4URL, social1URL, social2URL, social3URL, social4URL, social5URL);
-  
-      // Add the modified HTML to the zip file
-      zip.file("index.html", modifiedHTML);
-  
-      // Generate the zip file and save it
-      zip.generateAsync({ type: "blob" }).then(function (blob) {
-        // Save the generated zip file
-        saveAs(blob, "website_build.zip");
-      });
+        // Gather user-selected assets and data
+        const desktopVideoFile = desktopVideoInput.files[0];
+        const mobileVideoFile = mobileVideoInput.files[0];
+        const logoImage = logoImageInput.files[0];
+        const fontFile = fontFileInput.files[0];
+
+        const [
+            link1URL, link1Text,
+            link2URL, link2Text,
+            link3URL, link3Text,
+            link4URL, link4Text,
+            social1URL, social1Image,
+            social2URL, social2Image,
+            social3URL, social3Image,
+            social4URL, social4Image,
+            social5URL, social5Image
+        ] = [
+            link1URLInput.value, link1Input.value,
+            link2URLInput.value, link2Input.value,
+            link3URLInput.value, link3Input.value,
+            link4URLInput.value, link4Input.value,
+            social1URLInput.value, social1ImageInput.files[0],
+            social2URLInput.value, social2ImageInput.files[0],
+            social3URLInput.value, social3ImageInput.files[0],
+            social4URLInput.value, social4ImageInput.files[0],
+            social5URLInput.value, social5ImageInput.files[0]
+        ];
+
+        // Create a zip file using the chosen assets and data
+        const zip = new JSZip();
+
+        if (desktopVideoFile) { zip.file("videos/desktop.mp4", desktopVideoFile); }
+        if (mobileVideoFile) { zip.file("videos/mobile.mp4", mobileVideoFile); }
+        if (logoImage) { zip.file("images/logo.svg", logoImage); }
+        if (social1Image) { zip.file("images/social1.svg", social1Image); }
+        if (social2Image) { zip.file("images/social2.svg", social2Image); }
+        if (social3Image) { zip.file("images/social3.svg", social3Image); }
+        if (social4Image) { zip.file("images/social4.svg", social4Image); }
+        if (social5Image) { zip.file("images/social5.svg", social5Image); }
+
+        // Generate SVGs for the nav links
+        const linkTexts = [link1Text, link2Text, link3Text, link4Text];
+        const svgPaths = await generateSVGs(fontFile, linkTexts);
+        svgPaths.forEach((svgPath, index) => {
+            zip.file(`images/link${index + 1}.svg`, new Blob([svgPath], {type: 'image/svg+xml;charset=utf-8'}));
+        });
+
+        // Modify the template's content using the user-submitted data
+        const modifiedHTML = getModifiedHTML(link1URL, link2URL, link3URL, link4URL, social1URL, social2URL, social3URL, social4URL, social5URL);
+
+        // Add the modified HTML to the zip file
+        zip.file("index.html", modifiedHTML);
+
+        // Generate the zip file and save it
+        zip.generateAsync({ type: "blob" }).then(function (blob) {
+            // Save the generated zip file
+            saveAs(blob, "website_build.zip");
+        });
     });
-  
-    // Function to convert Font to SVG using font2svg library
-    async function generateSVGFilesFromFont(fontArrayBuffer, texts) {
-      const font = await opentype.parse(fontArrayBuffer);
-      const svgFiles = [];
-  
-      texts.forEach((text) => {
-        const path = font.getPath(text, 0, 150, 72);
-        const svgText = path.toSVG(2);
-        svgFiles.push(svgText);
-      });
-  
-      return svgFiles;
+    
+    async function generateSVGs(fontFile, texts) {
+        const fileReader = new FileReader();
+        const fontFilePromise = new Promise(resolve => {
+            fileReader.onload = () => resolve(fileReader.result);
+            fileReader.readAsArrayBuffer(fontFile);
+        });
+        const fontArrayBuffer = await fontFilePromise;
+        const font = opentype.parse(fontArrayBuffer);
+        const fontSize = 300;
+    
+        return texts.map(text => {
+            const path = font.getPath(text, 0, 225, fontSize);
+            const bbox = path.getBoundingBox();
+    
+            const width = bbox.x2 - bbox.x1;
+            const height = bbox.y2 - bbox.y1;
+    
+            // Adjust the viewBox to include the entire height of the text
+            return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${bbox.x1} ${bbox.y1} ${width} ${height}">${path.toSVG()}</svg>`;
+        });
     }
+    
 
     function getModifiedHTML(link1URL, link2URL, link3URL, link4URL, social1URL, social2URL, social3URL, social4URL, social5URL) {
         const templateHTML = `
