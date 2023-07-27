@@ -1,37 +1,42 @@
 .step {
     display: none;
 }
-#step1-radio:checked ~ #step1,
-#step2-radio:checked ~ #step2,
-#step3-radio:checked ~ #step3,
-#step4-radio:checked ~ #step4 {
+
+#step1-radio:checked~#step1,
+#step2-radio:checked~#step2,
+#step3-radio:checked~#step3,
+#step4-radio:checked~#step4 {
     display: block;
 }
+
 .two-columns {
     display: flex;
     gap: 20px;
-  }
-  .column {
+}
+
+.column {
     flex: 1;
-  }
+}
+
 input[type="radio"] {
     display: none;
-  }
+}
 
-  body {
+body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #1e1e1e; /* Dark mode background */
+    background-color: #1e1e1e;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    color: #f4f4f4; /* Dark mode text color */
+    color: #f4f4f4;
 }
 
 
-h1, h2 {
+h1,
+h2 {
     color: #f4f4f4;
 }
 
@@ -42,7 +47,7 @@ h1, h2 {
     background-color: #2d2d2d;
     border-color: #444;
     border-radius: 4px;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
 
@@ -52,23 +57,25 @@ form {
     justify-content: center;
     align-items: center;
 
-input[type="text"], input[type="file"] {
-    background-color: #3c3c3c;
-    color: #f4f4f4;
-    border-color: #444; 
-    width: 50%;
+    input[type="text"],
+    input[type="file"] {
+        background-color: #3c3c3c;
+        color: #f4f4f4;
+        border-color: #444;
+        width: 50%;
+    }
 }
 
-button {
-    background-color: #444;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 20px;
-}
+    button {
+        background-color: #444;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
 
-button:hover {
-    background-color: #555;
-}
+    button:hover {
+        background-color: #555;
+    }
