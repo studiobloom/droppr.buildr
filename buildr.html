@@ -30,9 +30,13 @@
         <form id="logoFontForm">
             <label for="logoImage">Upload Logo Image (SVG,PNG):</label>
             <input type="file" id="logoImage" accept=".svg, .png" required><br>
+
             <label for="fontFile">Upload Font (TTF, OTF, WOFF, WOFF2, EOT):</label>
             <input type="file" id="fontFile" accept=".ttf,.otf,.woff,.woff2,.eot" required><br>
-            
+
+            <label for="fontColor">Font Color (HEX code):</label>
+            <input type="text" id="fontColor" maxlength="7" pattern="[0-9a-fA-F]{6}" required value="#"><br>
+                  
             <label for="step3-radio"><strong>Next &gt;</strong></label>
             <label for="step1-radio"><strong>&lt; Back</strong></label>
         </form>
