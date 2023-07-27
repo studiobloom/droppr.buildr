@@ -125,14 +125,12 @@ document.addEventListener("DOMContentLoaded", function () {
               padding: 0;
               overflow: hidden;
             }
-            
             body, html {
                 height: 100%;
                 margin: 0;
                 padding: 0;
                 overflow: hidden;
             }
-            
             #backgroundVideoContainer {
                 position: fixed;
                 top: 0;
@@ -142,7 +140,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 overflow: hidden;
                 z-index: -1;
             }
-            
             #backgroundVideo {
                 position: fixed;
                 top: 50%;
@@ -154,20 +151,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 z-index: -1;
                 transform: translate(-50%, -50%);
             }
-            
             header, main, footer {
                 position: relative;
                 z-index: 1;
                 height: 10VW;
             }
-            
             #logoTop {
                 height: 10VW;
                 object-fit: contain;
                 align-items: center;
                 padding: 1%;
             }
-            
             #navTop {
                 z-index: 1;
                 position: fixed;
@@ -178,7 +172,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 align-items: center;
                 height: 10VW;
             }
-            
             .nav {
                 width: 8VW; 
                 height: 8VW;
@@ -189,12 +182,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 height: 4vh;
                 object-fit: scale-down;
               }
-            
-            
             .links {
                 padding: 1%;
             }
-            
             #logoMiddle {
                 position: fixed;
                 top: 50%;
@@ -203,13 +193,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 width: 40%;
                 object-fit: contain;
             }
-            
             .social-icon {
                 width: 7VW;
                 height: 7VW;
                 padding: 10px;
             }
-            
             #navBottom {
                 z-index: 1;
                 position: fixed;
@@ -223,12 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
               </style>
           </head>
           <body>
-              <div id="backgroundVideoContainer">
-                  <video autoplay loop muted playsinline id="backgroundVideo">
-                      <source src="videos/desktop.mp4" media="(min-width: 100VW)">
-                      <source src="videos/mobile.mp4">
-                  </video>
-              </div>
+
               <header>
                   <img id="logoTop" src="images/logo.svg" alt="Logo">
                   <nav id="navTop">
@@ -250,10 +233,29 @@ document.addEventListener("DOMContentLoaded", function () {
                       ${social5URL ? `<a href="${social5URL}" target="_blank" class="social"><img src="images/social5.svg" loading="eager" alt="${social5URL}" class="social-icon"></a>` : ''}
                   </nav>
               </footer>    
-          </body>
+                <div id="backgroundVideoContainer">
+                <video autoplay loop muted playsinline id="backgroundVideo">
+                </video>
+              </div></body>
+          <script>
+            var video = document.getElementById('backgroundVideo');
+            function setVideoSource() {
+                while (video.firstChild) {
+                    video.removeChild(video.firstChild);
+                }
+                var source = document.createElement('source');
+                if (window.innerWidth > 768) {
+                    source.src = "videos/desktop.mp4";
+                } else {
+                    source.src = "videos/mobile.mp4";
+                }
+                video.appendChild(source);
+                video.load();
+            }
+            setVideoSource();
+            window.onresize = setVideoSource;
+            </script>
           </html>`;
-        
-        // Replace the original template's HTML with the modified content
         return templateHTML;
       }
   });
