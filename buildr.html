@@ -1,113 +1,110 @@
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet" href="buildr.css">
 <head>
     <title>Website Builder</title>
-    <style>
-        .step {
-            display: none;
-        }
-        #step1-radio:checked ~ #step1,
-        #step2-radio:checked ~ #step2,
-        #step3-radio:checked ~ #step3,
-        #step4-radio:checked ~ #step4 {
-            display: block;
-        }
-    </style>
 </head>
 <body>
-    <h1>Website Builder</h1>
-
     <input type="radio" name="step" id="step1-radio" checked>
     <input type="radio" name="step" id="step2-radio">
     <input type="radio" name="step" id="step3-radio">
     <input type="radio" name="step" id="step4-radio">
 
     <div id="step1" class="step">
-        <h2>Videos</h2>
+        <h2>Background Video(s)</h2>
+        <p>Prep your video by using <a href="https://express.adobe.com/tools/crop-video" target="_blank">Adobe's Video Crop</a> tool. You will need to create Landscape 16:9 and Portrait 9:16 versions, make sure you mute it as well! Aim for video to be under 10 seconds, Max file size is 5mb. MP4 Format is required.</p>
         <form id="videoForm">
-            <label for="desktopVideo">Upload Desktop Video (MP4):</label>
+            <label for="desktopVideo">Upload Landscape 16:9 Video (MP4):</label>
             <input type="file" id="desktopVideo" accept=".mp4" required><br>
-            <label for="mobileVideo">Upload Mobile Video (MP4):</label>
+            
+            <label for="mobileVideo">Upload Portrait 9:16 Video (MP4):</label>
             <input type="file" id="mobileVideo" accept=".mp4" required><br>
             
-            <label for="step2-radio">Next</label>
+            <label for="step2-radio"><strong>Next &gt;</strong></label>
         </form>
     </div>
 
     <div id="step2" class="step">
         <h2>Logo + Font</h2>
+        <p>Upload your logo image (SVG format is best if possible). Choose a font you feel matches your logo and aesthetic from <a href="https://dafont.com" target="_blank">Dafont</a> or a similar site. Download the font file and upload it here.</p>
         <form id="logoFontForm">
-            <label for="logoImage">Upload Logo Image (SVG):</label>
-            <input type="file" id="logoImage" accept=".svg" required><br>
+            <label for="logoImage">Upload Logo Image (SVG,PNG):</label>
+            <input type="file" id="logoImage" accept=".svg, .png" required><br>
             <label for="fontFile">Upload Font (TTF, OTF, WOFF, WOFF2, EOT):</label>
             <input type="file" id="fontFile" accept=".ttf,.otf,.woff,.woff2,.eot" required><br>
             
-            <label for="step3-radio">Next</label>
+            <label for="step3-radio"><strong>Next &gt;</strong></label>
+            <label for="step1-radio"><strong>&lt; Back</strong></label>
         </form>
     </div>
 
     <div id="step3" class="step">
         <h2>Nav Links</h2>
+        <p>Now we'll create the top navigation menu using the font file you uploaded, your links and the names of said links. You don't want to put social media links here, they'll be placed at the bottom of the page.<br><br> Top Navigation Example: <br>Nav Link 1 URL: store.yoursite.droppr.xyz Text: STORE</p>
         <form id="navLinksForm">
-            <label for="link1URL">Top Nav Link 1 URL:</label>
+            <label for="link1URL">Nav Link 1 URL:</label>
             <input type="text" id="link1URL" required><br>
-            <label for="link1">Top Nav Link 1 Text:</label>
+            <label for="link1">Nav Link 1 Text:</label>
             <input type="text" id="link1" required><br>
     
-            <label for="link2URL">Top Nav Link 2 URL:</label>
+            <label for="link2URL">Nav Link 2 URL:</label>
             <input type="text" id="link2URL"><br>
-            <label for="link2">Top Nav Link 2 Text:</label>
+            <label for="link2">Nav Link 2 Text:</label>
             <input type="text" id="link2" required><br>
     
-            <label for="link3URL">Top Nav Link 3 URL:</label>
+            <label for="link3URL">Nav Link 3 URL:</label>
             <input type="text" id="link3URL"><br>
-            <label for="link3">Top Nav Link 3 Text:</label>
+            <label for="link3">Nav Link 3 Text:</label>
             <input type="text" id="link3" required><br>
     
-            <label for="link4URL">Top Nav Link 4 URL:</label>
+            <label for="link4URL">Nav Link 4 URL:</label>
             <input type="text" id="link4URL"><br>
-            <label for="link4">Top Nav Link 4 Text:</label>
+            <label for="link4">Nav Link 4 Text:</label>
             <input type="text" id="link4" required><br>
-    
-            <label for="step4-radio">Next</label>
+
+            <label for="step4-radio"><strong>Next &gt;</strong></label>
+            <label for="step2-radio"><strong>&lt; Back</strong></label>
         </form>
     </div>
 
-    <div id="step4" class="step">
-        <h2>Social Icons</h2>
-        <form id="socialIconsForm">
-            <label for="social1URL">Social Nav 1 URL:</label>
-            <input type="text" id="social1URL" required><br>
-            <label for="social1">Social Nav 1 Image (SVG):</label>
-            <input type="file" id="social1" accept=".svg" required><br>
-    
-            <label for="social2URL">Social Nav 2 URL:</label>
-            <input type="text" id="social2URL"><br>
-            <label for="social2">Social Nav 2 Image (SVG):</label>
-            <input type="file" id="social2" accept=".svg"><br>
-    
-            <label for="social3URL">Social Nav 3 URL:</label>
-            <input type="text" id="social3URL"><br>
-            <label for="social3">Social Nav 3 Image (SVG):</label>
-            <input type="file" id="social3" accept=".svg"><br>
-    
-            <label for="social4URL">Social Nav 4 URL:</label>
-            <input type="text" id="social4URL"><br>
-            <label for="social4">Social Nav 4 Image (SVG):</label>
-            <input type="file" id="social4" accept=".svg"><br>
-    
-            <label for="social5URL">Social Nav 5 URL:</label>
-            <input type="text" id="social5URL"><br>
-            <label for="social5">Social Nav 5 Image (SVG):</label>
-            <input type="file" id="social5" accept=".svg"><br>
-    
-            <button type="button" id="generateBuild">Generate Build</button>
-        </form>
-    </div>
+<div id="step4" class="step">
+  <h2>Social Icons</h2>
+  <p>The last step is adding your socials to the bottom navigation. Add the social media links you want and then head to <a href="https://icons8.com/icons/set/logos" target="_blank">Icons8</a> for free icon files (SVG is best).</p>
+    <form id="socialIconsForm">
+        <label for="social1URL">Social 1 URL:</label>
+        <input type="text" id="social1URL" required><br>
+        <label for="social1">Social 1 Image (SVG,PNG):</label>
+        <input type="file" id="social1" accept=".svg, .png" required><br>
+
+        <label for="social2URL">Social 2 URL:</label>
+        <input type="text" id="social2URL"><br>
+        <label for="social2">Social 2 Image (SVG,PNG):</label>
+        <input type="file" id="social2" accept=".svg, .png"><br>
+
+        <label for="social3URL">Social 3 URL:</label>
+        <input type="text" id="social3URL"><br>
+        <label for="social3">Social 3 Image (SVG,PNG):</label>
+        <input type="file" id="social3" accept=".svg, .png"><br>
+
+        <label for="social4URL">Social 4 URL:</label>
+        <input type="text" id="social4URL"><br>
+        <label for="social4">Social 4 Image (SVG,PNG):</label>
+        <input type="file" id="social4" accept=".svg, .png"><br>
+
+        <label for="social5URL">Social 5 URL:</label>
+        <input type="text" id="social5URL"><br>
+        <label for="social5">Social Nav 5 Image (SVG,PNG):</label>
+        <input type="file" id="social5" accept=".svg, .png"><br>
+
+        <label for="step3-radio"><strong>&lt; Back</strong></label>
+        <button type="button" id="generateBuild">Generate Build</button>
+    </form>
+  </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/0.12.0/opentype.min.js"></script>
 <script src="buildr.js"></script>
+
 </body>
 </html>

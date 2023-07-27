@@ -89,7 +89,21 @@ document.addEventListener("DOMContentLoaded", function () {
             saveAs(blob, "website_build.zip");
         });
     });
-    
+    function checkFileSize(inputElement, maxSizeMB) {
+        const file = inputElement.files[0];
+        if (file && file.size > maxSizeMB * 1024 * 1024) {
+          alert(`File size exceeds the limit of ${maxSizeMB}MB`);
+          inputElement.value = "";
+        }
+      }
+      desktopVideoInput.addEventListener("change", function() {
+        checkFileSize(this, 5);
+      });
+
+      mobileVideoInput.addEventListener("change", function() {
+        checkFileSize(this, 5);
+      });
+
     async function generateSVGs(fontFile, texts) {
         const fileReader = new FileReader();
         const fontFilePromise = new Promise(resolve => {
